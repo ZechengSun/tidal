@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="description" content="每日冥想 - 简单、轻量、有效的冥想工具，帮助您减轻压力，提升专注力">
+    <meta name="keywords" content="冥想,减压,专注力,心理健康,每日冥想">
+    
+    <!-- 性能优化 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="sounds/meditation-music.mp3" as="audio">
+    
+    <!-- 预连接关键域名 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <title>每日冥想 - 释放压力，提升健康</title>
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- PWA 相关 -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="image/icon-192.png">
+    
+    <!-- 字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 版本控制参数-确保浏览器加载最新资源 -->
+    <meta name="app-version" content="1.1.0">
+    
+    <!-- 关键资源预加载 -->
+    <link rel="preload" href="sounds/meditation-music.mp3" as="audio" fetchpriority="low">
+    <link rel="preload" as="script" href="script.js?v=1.1.0">
+    
+    <!-- PWA 支持 -->
+    <link rel="manifest" href="manifest.json?v=1.1.0">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16">
+    
+    <!-- 内联关键CSS - 提高首屏加载速度 -->
+    <style>
+        /* 关键渲染路径CSS */
+        body { 
+            margin: 0; 
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa; 
+            color: #34495e;
+        }
+        .page-container { 
+            width: 100vw; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+        .meditation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .circle-animation {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            background: rgba(52, 152, 219, 0.2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <!-- 导航栏 -->
+        <nav class="nav-bar" role="navigation" aria-label="主导航">
+            <div class="nav-item active" data-page="meditation-page" role="button" tabindex="0" aria-label="冥想页面">冥想</div>
+            <div class="nav-item" data-page="stats-page" role="button" tabindex="0" aria-label="统计页面">统计</div>
+            <div class="nav-item" data-page="benefits-page" role="button" tabindex="0" aria-label="好处页面">好处</div>
+        </nav>
+
+        <!-- 语言选择器 -->
+        <div class="language-bar">
+            <div class="language-selector">
+                <label for="languageSelect" class="visually-hidden">选择语言</label>
+                <select id="languageSelect" aria-label="语言选择">
+                    <option value="zh">简体中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 页面内容 -->
+        <main class="content">
+            <!-- 冥想页面 -->
+            <section class="page active" id="page-meditation" aria-labelledby="meditation-title">
+                <header>
+                    <h1 id="meditation-title">每日冥想</h1>
+                    <p>简单、轻量、有效的冥想工具</p>
+                </header>
+
+                <div class="meditation-container">
+                    <button id="fullscreenToggle" class="fullscreen-toggle" aria-label="全屏模式">⛶</button>
+                    
+                    <!-- 修改呼吸圆圈结构，将文字放入圆圈内 -->
+                    <div class="circle-animation" id="breathCircle" aria-live="polite">
+                        <div class="breath-text" id="breathText">准备开始</div>
+                    </div>
+                    
+                    <div class="timer" id="timer" aria-live="polite">00:00</div>
+                    
+                    <div class="controls">
+                        <button id="startPauseBtn" class="btn primary" aria-label="开始冥想">开始冥想</button>
+                        <button id="resetBtn" class="btn" disabled style="display:none;" aria-label="重置">重置</button>
+                        <button id="toggleMusicBtn" class="btn" aria-label="音乐开关">
+                            <div class="music-icon">🎵</div>
+                        </button>
+                    </div>
+                    
+                    <div class="session-settings">
+                        <label for="sessionTime">冥想时长 (<span id="minutesText">分钟</span>):</label>
+                        <select id="sessionTime" aria-label="选择冥想时长">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                        </select>
+                    </div>
+                    
+                    <!-- 书签和添加到主屏幕提示 -->
+                    <div class="bookmark-add-home-reminder" id="bookmarkAddHomeReminder" aria-labelledby="reminder-title">
+                        <div class="reminder-icon" aria-hidden="true">✨</div>
+                        <div class="reminder-content">
+                            <p id="reminder-title">将冥想工具添加到您的设备，随时使用：</p>
+                            <div class="action-buttons">
+                                <button id="add-to-bookmark" class="action-button" aria-label="添加到收藏夹">
+                                    <span class="icon" aria-hidden="true">🔖</span>
+                                    <span class="action-text" data-lang="addToBookmark">添加到收藏夹</span>
+                                </button>
+                                <button id="add-to-home" class="action-button" aria-label="添加到主屏幕">
+                                    <span class="icon" aria-hidden="true">📱</span>
+                                    <span class="action-text" data-lang="addToHome">添加到主屏幕</span>
+                                </button>
+                            </div>
+                        </div>
+                        <button id="closeAddHomeReminderBtn" class="reminder-close" aria-label="关闭提示">×</button>
+                    </div>
+                </div>
+                
+                <!-- 音频元素 -->
+                <audio id="meditationMusic" loop preload="none">
+                    <source src="sounds/meditation-music.mp3" type="audio/mpeg">
+                    <p>您的浏览器不支持音频播放。</p>
+                </audio>
+            </section>
+
+            <!-- 统计页面 -->
+            <section class="page" id="page-stats" aria-labelledby="stats-title">
+                <header>
+                    <h1 id="stats-title">冥想统计</h1>
+                    <p>跟踪您的冥想记录</p>
+                </header>
+
+                <div class="stats-container" id="statsContainer">
+                    <div class="stats" role="list">
+                        <div class="stat-item" role="listitem">
+                            <span class="stat-value" id="totalSessions">0</span>
+                            <span class="stat-label">总冥想次数</span>
+                        </div>
+                        <div class="stat-item" role="listitem">
+                            <span class="stat-value" id="totalMinutes">0</span>
+                            <span class="stat-label">总冥想分钟</span>
+                        </div>
+                        <div class="stat-item" role="listitem">
+                            <span class="stat-value" id="currentStreak">0</span>
+                            <span class="stat-label">连续天数</span>
+                        </div>
+                    </div>
+                    <div class="bookmark-reminder hidden" id="bookmarkReminder" aria-live="polite">
+                        <p>💡 小提示: 将本页添加到书签，下次可直接访问您的个人冥想空间</p>
+                        <button id="closeReminderBtn" class="btn small">明白了</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 益处页面 -->
+            <section class="page" id="page-benefits" aria-labelledby="benefits-title">
+                <header>
+                    <h1 id="benefits-title">冥想好处</h1>
+                    <p>了解冥想为何有效</p>
+                </header>
+
+                <section class="benefits">
+                    <div class="benefits-grid">
+                        <div class="benefit-item">
+                            <h3>减轻压力</h3>
+                            <p>研究表明，每天冥想10分钟可以显著降低焦虑和压力水平</p>
+                        </div>
+                        <div class="benefit-item">
+                            <h3>改善睡眠</h3>
+                            <p>定期冥想有助于改善睡眠质量，缓解失眠问题</p>
+                        </div>
+                        <div class="benefit-item">
+                            <h3>提高专注力</h3>
+                            <p>冥想训练可以增强注意力和集中力，提高工作效率</p>
+                        </div>
+                        <div class="benefit-item">
+                            <h3>情绪管理</h3>
+                            <p>帮助您更好地理解和管理自己的情绪反应</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="why-use">
+                    <h2>为什么选择我们的网页冥想工具？</h2>
+                    <div class="features">
+                        <div class="feature">
+                            <h3>超轻量</h3>
+                            <p>仅需1KB书签空间，比动辄几十兆的App节省99.9%的设备空间</p>
+                        </div>
+                        <div class="feature">
+                            <h3>无需安装</h3>
+                            <p>直接在浏览器中使用，无需下载应用，无需注册账号</p>
+                        </div>
+                        <div class="feature">
+                            <h3>跨平台</h3>
+                            <p>在任何设备上都能使用 - 手机、平板、电脑均可访问</p>
+                        </div>
+                        <div class="feature">
+                            <h3>数据隐私</h3>
+                            <p>您的冥想数据仅保存在您的设备上，不会上传到服务器</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© <span id="current-year">2024</span> 每日冥想 - 轻松开始冥想之旅</p>
+        </footer>
+    </div>
+
+    <!-- 错误消息容器 -->
+    <div id="error-container" class="error-container hidden" role="alert" aria-live="assertive"></div>
+
+    <!-- Service Worker注册 -->
+    <script>
+        // 立即注册Service Worker，优化离线体验
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js?v=1.1.0')
+                    .then(registration => {
+                        console.log('Service Worker注册成功:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Service Worker注册失败:', error);
+                    });
+            });
+        }
+        
+        // 自动更新年份
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+    
+    <!-- 脚本延迟加载 -->
+    <script src="script.js?v=1.1.0" defer></script>
+    <script src="debug.js?v=1.1.0" defer></script>
+</body>
+</html> 
