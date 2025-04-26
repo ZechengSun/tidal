@@ -104,6 +104,14 @@
             align-items: center;
             justify-content: center;
         }
+        footer {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 8px;
+            color: var(--light-text);
+            font-size: 0.85rem;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -149,7 +157,7 @@
                 <div class="timer" id="timer" aria-live="polite">00:00</div>
                 
                 <div class="controls">
-                    <button id="startPauseBtn" class="btn primary" aria-label="开始冥想">开始冥想</button>
+                    <button id="startPauseBtn" class="btn primary" aria-label="开始冥想"><div class="start-icon"></div></button>
                     <button id="resetBtn" class="btn" disabled style="display:none;" aria-label="重置">重置</button>
                     <button id="toggleMusicBtn" class="btn" aria-label="音乐开关">
                         <div class="music-icon">🎵</div>
@@ -276,9 +284,7 @@
         </main>
 
         <!-- 页脚 -->
-        <footer>
-            <p>© <span id="current-year">2024</span> 每日冥想 - 轻松开始冥想之旅</p>
-        </footer>
+        <footer id="footerText">© 2024 每日冥想 - 轻松开始冥想之旅</footer>
     </div>
 
     <!-- 错误消息容器 -->

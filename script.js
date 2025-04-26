@@ -1037,6 +1037,9 @@ class LanguageManager {
                 androidStep1: 'ブラウザの右上のメニューボタン (⋮) をタップ',
                 androidStep2: '「ホーム画面に追加」または「アプリをインストール」を選択',
                 pcStep1: 'Ctrl+D (Windows) または ⌘+D (Mac) を押してブックマークに追加',
+                meditationTab: '瞑想',
+                statsTab: '統計',
+                benefitsTab: '効果'
             },
             ko: {
                 title: '매일 명상 - 스트레스 해소, 건강 증진',
@@ -1087,6 +1090,9 @@ class LanguageManager {
                 androidStep1: '브라우저의 오른쪽 상단 모서리에 있는 메뉴 버튼(⋮)을 탭하세요',
                 androidStep2: '"홈 화면에 추가" 또는 "앱 설치" 옵션을 탭하세요',
                 pcStep1: 'Ctrl+D(Windows) 또는 ⌘+D(Mac)를 눌러 북마크에 추가하세요',
+                meditationTab: '명상',
+                statsTab: '통계',
+                benefitsTab: '효과'
             }
         };
         
@@ -1168,6 +1174,12 @@ class LanguageManager {
                 navItems[0].textContent = this.getTranslation('meditationTab');
                 navItems[1].textContent = this.getTranslation('statsTab');
                 navItems[2].textContent = this.getTranslation('benefitsTab');
+            }
+            
+            // 更新页脚文本
+            const footerText = document.getElementById('footerText');
+            if (footerText) {
+                footerText.textContent = this.getTranslation('footer');
             }
             
             // 更新所有页面的header标题和副标题
