@@ -220,6 +220,7 @@ class MeditationData {
 // 冥想会话管理
 class MeditationSession {
     constructor(dataManager) {
+        console.log('初始化MeditationSession...');
         this.dataManager = dataManager;
         this.duration = 0; // 以分钟为单位
         this.remainingSeconds = 0;
@@ -239,7 +240,14 @@ class MeditationSession {
         this.toggleMusicBtn = document.getElementById('toggleMusicBtn');
         this.sessionTimeSelect = document.getElementById('sessionTime');
         this.fullscreenToggle = document.getElementById('fullscreenToggle');
-        this.backgroundVideo = document.getElementById('backgroundVideo');
+        
+        // 创建粒子系统
+        console.log('创建粒子系统...');
+        this.particleSystem = new ParticleSystem();
+        const contentElement = document.querySelector('.content');
+        console.log('找到content元素:', contentElement);
+        this.particleSystem.appendTo(contentElement);
+        console.log('粒子系统已添加到页面');
         
         // 初始化事件监听器
         this.initEventListeners();
@@ -278,6 +286,7 @@ class MeditationSession {
     
     start() {
         if (this.isPaused) {
+            console.log('开始冥想会话...');
             this.isPaused = false;
             this.isStarted = true;
             
@@ -306,17 +315,16 @@ class MeditationSession {
             // 启动呼吸动画
             this.startBreathAnimation();
             
-            // 播放背景视频
-            if (this.backgroundVideo) {
-                this.backgroundVideo.classList.add('visible');
-                this.backgroundVideo.play();
-            }
+            // 启动粒子动画
+            console.log('尝试启动粒子动画...');
+            this.particleSystem.start();
             
             // 禁用时长选择
             this.sessionTimeSelect.disabled = true;
             
             // 分发开始事件
             document.dispatchEvent(new Event('meditation:start'));
+            console.log('冥想会话已开始');
         }
     }
     
@@ -334,10 +342,8 @@ class MeditationSession {
             // 暂停呼吸动画
             this.pauseBreathAnimation();
             
-            // 暂停背景视频
-            if (this.backgroundVideo) {
-                this.backgroundVideo.pause();
-            }
+            // 暂停粒子动画
+            this.particleSystem.stop();
             
             // 分发暂停事件
             document.dispatchEvent(new Event('meditation:pause'));
@@ -352,10 +358,8 @@ class MeditationSession {
             // 继续呼吸动画
             this.resumeBreathAnimation();
             
-            // 继续播放背景视频
-            if (this.backgroundVideo) {
-                this.backgroundVideo.play();
-            }
+            // 继续粒子动画
+            this.particleSystem.start();
             
             // 恢复音乐播放（如果音乐是开启状态）
             if (window.audioManager && window.audioManager.isMusicPlaying) {
@@ -377,6 +381,9 @@ class MeditationSession {
         // 停止呼吸动画
         this.stopBreathAnimation();
         
+        // 停止粒子动画
+        this.particleSystem.stop();
+        
         // 重置状态
         this.isPaused = true;
         this.isStarted = false;
@@ -396,12 +403,6 @@ class MeditationSession {
         // 隐藏重置按钮
         this.resetBtn.style.display = 'none';
         this.resetBtn.disabled = true;
-        
-        // 停止并隐藏背景视频
-        if (this.backgroundVideo) {
-            this.backgroundVideo.pause();
-            this.backgroundVideo.classList.remove('visible');
-        }
         
         // 启用时长选择
         this.sessionTimeSelect.disabled = false;

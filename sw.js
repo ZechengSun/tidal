@@ -20,8 +20,7 @@ const STATIC_ASSETS = [
 // 需要缓存但可能会更新的资源
 const DYNAMIC_ASSETS = [
   './sounds/meditation-music.mp3',
-  './sounds/bell.mp3',
-  './video/sea.mp4'
+  './sounds/bell.mp3'
 ];
 
 // 最大缓存大小（字节）

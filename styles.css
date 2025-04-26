@@ -136,6 +136,19 @@ a:hover {
     flex: 1;
     overflow: hidden;
     position: relative;
+    background-color: var(--background-color);
+}
+
+/* 粒子画布样式 */
+.particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-color: transparent;
 }
 
 /* ----------------- 导航栏 ----------------- */
