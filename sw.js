@@ -9,12 +9,7 @@ const STATIC_ASSETS = [
   './index.html',
   './styles.css',
   './script.js',
-  './debug.js',
-  './manifest.json',
-  './icons/icon-192x192.png',
-  './icons/icon-512x512.png',
-  './icons/favicon-32x32.png',
-  './icons/favicon-16x16.png'
+  './manifest.json'
 ];
 
 // 需要缓存但可能会更新的资源
