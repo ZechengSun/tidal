@@ -9,13 +9,18 @@ const STATIC_ASSETS = [
   './index.html',
   './styles.css',
   './script.js',
-  './manifest.json'
+  './manifest.json',
+  './particles.js',
+  './favicon/favicon.ico',
+  './favicon/favicon.svg',
+  './favicon/favicon-96x96.png',
+  './favicon/apple-touch-icon.png',
+  './favicon/site.webmanifest'
 ];
 
 // 需要缓存但可能会更新的资源
 const DYNAMIC_ASSETS = [
-  './sounds/meditation-music.mp3',
-  './sounds/bell.mp3'
+  './sounds/meditation-music.mp3'
 ];
 
 // 最大缓存大小（字节）
