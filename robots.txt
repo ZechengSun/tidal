@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /sounds/
+Disallow: /icons/
+
+Sitemap: https://your-domain.com/sitemap.xml 

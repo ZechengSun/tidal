@@ -26,7 +26,7 @@
     --success-color: #2ecc71;
     
     /* 尺寸 */
-    --nav-height: 60px;
+    --nav-height: 80px;
     --border-radius: 16px;
     --button-radius: 12px;
     --card-radius: 12px;
@@ -300,24 +300,6 @@ main {
     flex-direction: column;
     gap: 40px;
     margin-bottom: 60px;
-}
-
-/* 冥想容器 */
-.meditation-container {
-    background-color: var(--card-background);
-    border-radius: var(--border-radius);
-    padding: 30px;
-    box-shadow: var(--shadow);
-    text-align: center;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
 }
 
 /* 呼吸圆圈动画 */
@@ -938,7 +920,7 @@ footer {
     }
     
     .nav-bar {
-        height: 60px;
+        height: 90px;
     }
     
     .nav-item {
@@ -971,10 +953,6 @@ footer {
         font-size: 1rem;
     }
 
-    .meditation-container {
-        padding: 20px;
-    }
-    
     .circle-animation {
         width: min(150px, 40vw);
         height: min(150px, 40vw);
@@ -1133,10 +1111,6 @@ footer {
     
     .action-buttons {
         flex-direction: column;
-    }
-    
-    .meditation-container {
-        padding: 15px;
     }
     
     .session-settings {

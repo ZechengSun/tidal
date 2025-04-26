@@ -1920,6 +1920,33 @@ class PerformanceMonitor {
     }
 }
 
+// 书签提示管理
+class BookmarkReminderManager {
+    constructor() {
+        this.reminderElement = document.getElementById('bookmarkAddHomeReminder');
+        this.closeButton = document.getElementById('closeAddHomeReminderBtn');
+        this.storageKey = 'bookmarkReminderHidden';
+        
+        this.init();
+    }
+    
+    init() {
+        // 检查是否已经隐藏过提示
+        const isHidden = localStorage.getItem(this.storageKey) === 'true';
+        if (isHidden) {
+            this.reminderElement.style.display = 'none';
+        }
+        
+        // 添加关闭按钮事件监听
+        this.closeButton.addEventListener('click', () => this.hideReminder());
+    }
+    
+    hideReminder() {
+        this.reminderElement.style.display = 'none';
+        localStorage.setItem(this.storageKey, 'true');
+    }
+}
+
 /**
  * 当DOM内容加载完成后初始化应用
  */
@@ -2005,6 +2032,8 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(`应用初始化完成，用时 ${Math.round(perfNow)}ms`);
             window.performanceMonitor.recordMetric('应用初始化', perfNow);
         }
+
+        new BookmarkReminderManager();
     } catch (error) {
         console.error('应用初始化失败:', error);
         // 显示友好的错误消息给用户

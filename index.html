@@ -47,6 +47,30 @@
     <link rel="icon" type="image/png" href="icons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="icons/favicon-16x16.png" sizes="16x16">
     
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "每日冥想",
+        "description": "简单、轻量、有效的冥想工具，帮助您减轻压力，提升专注力",
+        "url": "https://your-domain.com",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "featureList": [
+            "超轻量设计",
+            "无需安装",
+            "跨平台支持",
+            "数据隐私保护"
+        ]
+    }
+    </script>
+    
     <!-- 内联关键CSS - 提高首屏加载速度 -->
     <style>
         /* 关键渲染路径CSS */
@@ -113,53 +137,51 @@
                     <p>简单、轻量、有效的冥想工具</p>
                 </header>
 
-                <div class="meditation-container">
-                    <button id="fullscreenToggle" class="fullscreen-toggle" aria-label="全屏模式">⛶</button>
-                    
-                    <!-- 修改呼吸圆圈结构，将文字放入圆圈内 -->
-                    <div class="circle-animation" id="breathCircle" aria-live="polite">
-                        <div class="breath-text" id="breathText">准备开始</div>
-                    </div>
-                    
-                    <div class="timer" id="timer" aria-live="polite">00:00</div>
-                    
-                    <div class="controls">
-                        <button id="startPauseBtn" class="btn primary" aria-label="开始冥想">开始冥想</button>
-                        <button id="resetBtn" class="btn" disabled style="display:none;" aria-label="重置">重置</button>
-                        <button id="toggleMusicBtn" class="btn" aria-label="音乐开关">
-                            <div class="music-icon">🎵</div>
-                        </button>
-                    </div>
-                    
-                    <div class="session-settings">
-                        <label for="sessionTime">冥想时长 (<span id="minutesText">分钟</span>):</label>
-                        <select id="sessionTime" aria-label="选择冥想时长">
-                            <option value="5">5</option>
-                            <option value="10" selected>10</option>
-                            <option value="15">15</option>
-                            <option value="20">20</option>
-                            <option value="30">30</option>
-                        </select>
-                    </div>
-                    
-                    <!-- 书签和添加到主屏幕提示 -->
-                    <div class="bookmark-add-home-reminder" id="bookmarkAddHomeReminder" aria-labelledby="reminder-title">
-                        <div class="reminder-icon" aria-hidden="true">✨</div>
-                        <div class="reminder-content">
-                            <p id="reminder-title">将冥想工具添加到您的设备，随时使用：</p>
-                            <div class="action-buttons">
-                                <button id="add-to-bookmark" class="action-button" aria-label="添加到收藏夹">
-                                    <span class="icon" aria-hidden="true">🔖</span>
-                                    <span class="action-text" data-lang="addToBookmark">添加到收藏夹</span>
-                                </button>
-                                <button id="add-to-home" class="action-button" aria-label="添加到主屏幕">
-                                    <span class="icon" aria-hidden="true">📱</span>
-                                    <span class="action-text" data-lang="addToHome">添加到主屏幕</span>
-                                </button>
-                            </div>
+                <button id="fullscreenToggle" class="fullscreen-toggle" aria-label="全屏模式">⛶</button>
+                
+                <!-- 修改呼吸圆圈结构，将文字放入圆圈内 -->
+                <div class="circle-animation" id="breathCircle" aria-live="polite">
+                    <div class="breath-text" id="breathText">准备开始</div>
+                </div>
+                
+                <div class="timer" id="timer" aria-live="polite">00:00</div>
+                
+                <div class="controls">
+                    <button id="startPauseBtn" class="btn primary" aria-label="开始冥想">开始冥想</button>
+                    <button id="resetBtn" class="btn" disabled style="display:none;" aria-label="重置">重置</button>
+                    <button id="toggleMusicBtn" class="btn" aria-label="音乐开关">
+                        <div class="music-icon">🎵</div>
+                    </button>
+                </div>
+                
+                <div class="session-settings">
+                    <label for="sessionTime">冥想时长 (<span id="minutesText">分钟</span>):</label>
+                    <select id="sessionTime" aria-label="选择冥想时长">
+                        <option value="5">5</option>
+                        <option value="10" selected>10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+                
+                <!-- 书签和添加到主屏幕提示 -->
+                <div class="bookmark-add-home-reminder" id="bookmarkAddHomeReminder" aria-labelledby="reminder-title">
+                    <div class="reminder-icon" aria-hidden="true">✨</div>
+                    <div class="reminder-content">
+                        <p id="reminder-title">将冥想工具添加到您的设备，随时使用：</p>
+                        <div class="action-buttons">
+                            <button id="add-to-bookmark" class="action-button" aria-label="添加到收藏夹">
+                                <span class="icon" aria-hidden="true">🔖</span>
+                                <span class="action-text" data-lang="addToBookmark">添加到收藏夹</span>
+                            </button>
+                            <button id="add-to-home" class="action-button" aria-label="添加到主屏幕">
+                                <span class="icon" aria-hidden="true">📱</span>
+                                <span class="action-text" data-lang="addToHome">添加到主屏幕</span>
+                            </button>
                         </div>
-                        <button id="closeAddHomeReminderBtn" class="reminder-close" aria-label="关闭提示">×</button>
                     </div>
+                    <button id="closeAddHomeReminderBtn" class="reminder-close" aria-label="关闭提示">×</button>
                 </div>
                 
                 <!-- 音频元素 -->
