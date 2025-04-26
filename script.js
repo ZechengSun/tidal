@@ -239,6 +239,7 @@ class MeditationSession {
         this.toggleMusicBtn = document.getElementById('toggleMusicBtn');
         this.sessionTimeSelect = document.getElementById('sessionTime');
         this.fullscreenToggle = document.getElementById('fullscreenToggle');
+        this.backgroundVideo = document.getElementById('backgroundVideo');
         
         // 初始化事件监听器
         this.initEventListeners();
@@ -305,6 +306,12 @@ class MeditationSession {
             // 启动呼吸动画
             this.startBreathAnimation();
             
+            // 播放背景视频
+            if (this.backgroundVideo) {
+                this.backgroundVideo.classList.add('visible');
+                this.backgroundVideo.play();
+            }
+            
             // 禁用时长选择
             this.sessionTimeSelect.disabled = true;
             
@@ -317,7 +324,6 @@ class MeditationSession {
         this.isPaused = !this.isPaused;
         
         if (this.isPaused) {
-            // 暂停状态
             this.startPauseBtn.innerHTML = '<div class="start-icon"></div>';
             this.startPauseBtn.setAttribute('aria-label', window.langManager ? window.langManager.getTranslation('resume') : '继续');
             
@@ -327,6 +333,11 @@ class MeditationSession {
             
             // 暂停呼吸动画
             this.pauseBreathAnimation();
+            
+            // 暂停背景视频
+            if (this.backgroundVideo) {
+                this.backgroundVideo.pause();
+            }
             
             // 分发暂停事件
             document.dispatchEvent(new Event('meditation:pause'));
@@ -340,6 +351,11 @@ class MeditationSession {
             
             // 继续呼吸动画
             this.resumeBreathAnimation();
+            
+            // 继续播放背景视频
+            if (this.backgroundVideo) {
+                this.backgroundVideo.play();
+            }
             
             // 恢复音乐播放（如果音乐是开启状态）
             if (window.audioManager && window.audioManager.isMusicPlaying) {
@@ -380,6 +396,12 @@ class MeditationSession {
         // 隐藏重置按钮
         this.resetBtn.style.display = 'none';
         this.resetBtn.disabled = true;
+        
+        // 停止并隐藏背景视频
+        if (this.backgroundVideo) {
+            this.backgroundVideo.pause();
+            this.backgroundVideo.classList.remove('visible');
+        }
         
         // 启用时长选择
         this.sessionTimeSelect.disabled = false;
@@ -908,6 +930,9 @@ class LanguageManager {
                 androidStep1: '点击浏览器右上角的菜单按钮 (⋮)',
                 androidStep2: '点击"添加到主屏幕"或"安装应用"选项',
                 pcStep1: '按 Ctrl+D (Windows) 或 ⌘+D (Mac) 添加到收藏夹',
+                meditationTab: '冥想',
+                statsTab: '统计',
+                benefitsTab: '好处'
             },
             en: {
                 title: 'Daily Meditation - Release Stress, Improve Health',
@@ -958,6 +983,9 @@ class LanguageManager {
                 androidStep1: 'Tap the menu button (⋮) in the top-right corner of your browser',
                 androidStep2: 'Tap "Add to Home Screen" or "Install App" option',
                 pcStep1: 'Press Ctrl+D (Windows) or ⌘+D (Mac) to add to bookmarks',
+                meditationTab: 'Meditation',
+                statsTab: 'Stats',
+                benefitsTab: 'Benefits'
             },
             ja: {
                 title: '毎日瞑想 - ストレス解放、健康増進',
@@ -1082,7 +1110,7 @@ class LanguageManager {
     
     getBrowserLanguage() {
         // 获取浏览器语言，处理形如 'zh-CN', 'en-US' 等格式
-        let browserLang = navigator.language || navigator.userLanguage || 'zh';
+        let browserLang = navigator.language || navigator.userLanguage || 'en';
         console.log("原始浏览器语言设置:", browserLang);
         
         // 如果语言代码包含短横线，只取前面部分
@@ -1093,8 +1121,8 @@ class LanguageManager {
         // 检查是否在我们支持的语言列表中
         const supportedLangs = ['zh', 'en', 'ja', 'ko'];
         if (!supportedLangs.includes(browserLang)) {
-            console.log("不支持的语言，使用默认语言(中文)");
-            return 'zh'; // 默认使用中文
+            console.log("不支持的语言，使用默认语言(英文)");
+            return 'en'; // 默认使用英文
         }
         
         return browserLang;
@@ -1133,6 +1161,26 @@ class LanguageManager {
             // 修改页面标题
             document.title = this.getTranslation('title');
             
+            // 更新导航栏文本
+            const navItems = document.querySelectorAll('.nav-item');
+            if (navItems.length >= 3) {
+                navItems[0].textContent = this.getTranslation('meditationTab');
+                navItems[1].textContent = this.getTranslation('statsTab');
+                navItems[2].textContent = this.getTranslation('benefitsTab');
+            }
+            
+            // 更新所有页面的header标题和副标题
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                const header = page.querySelector('header');
+                if (header) {
+                    const h1 = header.querySelector('h1');
+                    const p = header.querySelector('p');
+                    if (h1) h1.textContent = this.getTranslation('headerTitle');
+                    if (p) p.textContent = this.getTranslation('headerSubtitle');
+                }
+            });
+            
             // 冥想页面标题和副标题
             const meditationHeader = document.querySelector('#meditation-page header');
             if (meditationHeader) {
@@ -1140,6 +1188,20 @@ class LanguageManager {
                 const p = meditationHeader.querySelector('p');
                 if (h1) h1.textContent = this.getTranslation('headerTitle');
                 if (p) p.textContent = this.getTranslation('headerSubtitle');
+            }
+            
+            // 统计页面标题
+            const statsHeader = document.querySelector('#stats-page header');
+            if (statsHeader) {
+                const h1 = statsHeader.querySelector('h1');
+                if (h1) h1.textContent = this.getTranslation('stats');
+            }
+            
+            // 好处页面标题
+            const benefitsHeader = document.querySelector('#benefits-page header');
+            if (benefitsHeader) {
+                const h1 = benefitsHeader.querySelector('h1');
+                if (h1) h1.textContent = this.getTranslation('benefits');
             }
             
             // 冥想控制

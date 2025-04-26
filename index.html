@@ -130,6 +130,11 @@
 
         <!-- 页面内容 -->
         <main class="content">
+            <!-- 视频背景 -->
+            <video id="backgroundVideo" class="background-video" loop muted playsinline>
+                <source src="video/sea.mp4" type="video/mp4">
+            </video>
+            
             <!-- 冥想页面 -->
             <section class="page active" id="page-meditation" aria-labelledby="meditation-title">
                 <header>
@@ -157,6 +162,7 @@
                 <div class="session-settings">
                     <label for="sessionTime">冥想时长 (<span id="minutesText">分钟</span>):</label>
                     <select id="sessionTime" aria-label="选择冥想时长">
+                        <option value="1">1</option>
                         <option value="5">5</option>
                         <option value="10" selected>10</option>
                         <option value="15">15</option>
@@ -302,6 +308,5 @@
     
     <!-- 脚本延迟加载 -->
     <script src="script.js?v=1.1.0" defer></script>
-    <script src="debug.js?v=1.1.0" defer></script>
 </body>
 </html> 

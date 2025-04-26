@@ -20,7 +20,8 @@ const STATIC_ASSETS = [
 // 需要缓存但可能会更新的资源
 const DYNAMIC_ASSETS = [
   './sounds/meditation-music.mp3',
-  './sounds/bell.mp3'
+  './sounds/bell.mp3',
+  './video/sea.mp4'
 ];
 
 // 最大缓存大小（字节）
@@ -206,8 +207,8 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // 音频文件使用缓存优先策略
-  if (url.pathname.includes('/sounds/')) {
+  // 音频和视频文件使用缓存优先策略
+  if (url.pathname.includes('/sounds/') || url.pathname.includes('/video/')) {
     event.respondWith(cacheFirst(event.request));
     return;
   }
